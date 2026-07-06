@@ -97,11 +97,13 @@ body{
 /* main */
 .main{display:flex;flex-direction:column;overflow:hidden}
 .topbar{
-  height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;
+  height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;
   gap:18px;padding:0 22px;background:rgba(8,11,20,.5);backdrop-filter:blur(8px);flex-shrink:0;
 }
-.brandname{font-family:'Space Grotesk';font-weight:700;font-size:18px;letter-spacing:.16em}
+.brandname{font-family:'Space Grotesk';font-weight:700;font-size:18px;letter-spacing:.16em;line-height:1}
 .brandname b{color:var(--cyan)}
+.brandname .otis-sub{display:block;font-family:'JetBrains Mono';font-size:8px;letter-spacing:.13em;
+  color:var(--cyan-dim);font-weight:400;margin-top:5px;text-transform:uppercase;opacity:.8}
 .crumb{font-size:11px;color:var(--txt-dim);letter-spacing:.22em;text-transform:uppercase;font-family:'JetBrains Mono'}
 .ticker{
   flex:1;overflow:hidden;height:24px;mask:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
@@ -149,13 +151,13 @@ body{
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
 @media(max-width:1100px){.cmd-grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
 
-.kpi{padding:16px 16px 14px}
-.kpi .lab{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.16em;color:var(--txt-dim);text-transform:uppercase}
-.kpi .val{font-family:'Space Grotesk';font-size:30px;font-weight:700;margin:6px 0 2px;letter-spacing:-.02em}
+.kpi{padding:18px 18px 14px}
+.kpi .lab{font-family:'JetBrains Mono';font-size:9.5px;letter-spacing:.18em;color:var(--txt-dim);text-transform:uppercase}
+.kpi .val{font-family:'Space Grotesk';font-size:36px;font-weight:700;margin:8px 0 3px;letter-spacing:-.02em}
 .kpi .val small{font-size:15px;color:var(--txt-mid);font-weight:500}
 .kpi .delta{font-family:'JetBrains Mono';font-size:11px;display:inline-flex;align-items:center;gap:4px}
 .kpi .delta.up{color:var(--green)}.kpi .delta.dn{color:var(--red)}.kpi .delta.flat{color:var(--txt-dim)}
-.kpi .spark{margin-top:8px;height:26px;width:100%}
+.kpi .spark{margin-top:10px;height:28px;width:100%}
 
 /* arc reactor */
 .reactor-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0 14px}
@@ -291,19 +293,34 @@ body{
   border:1px solid var(--line);color:var(--txt-dim);letter-spacing:.05em;text-transform:uppercase}
 .auto-opt.on{background:linear-gradient(160deg,rgba(54,226,255,.2),rgba(27,143,176,.1));border-color:rgba(54,226,255,.5);color:var(--cyan)}
 
-/* jarvis bar */
-.jarvis{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;width:min(660px,calc(100% - 110px))}
-.j-inner{background:linear-gradient(160deg,rgba(16,24,42,.95),rgba(8,11,20,.95));border:1px solid rgba(54,226,255,.35);
-  border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(14px);
-  box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 24px rgba(54,226,255,.12)}
+/* O.T.I.S. input bar */
+.jarvis{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;width:min(700px,calc(100% - 110px))}
+.j-inner{background:linear-gradient(160deg,rgba(16,24,42,.97),rgba(8,11,20,.97));border:1px solid rgba(54,226,255,.32);
+  border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(14px);
+  box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 24px rgba(54,226,255,.1)}
 .j-orb{width:30px;height:30px;border-radius:50%;flex-shrink:0;position:relative;
-  background:radial-gradient(circle at 50% 40%,#fff,var(--cyan) 45%,var(--cyan-dim));box-shadow:0 0 16px var(--cyan)}
+  background:radial-gradient(circle at 50% 40%,#fff,var(--cyan) 45%,var(--cyan-dim));box-shadow:0 0 16px var(--cyan);
+  border:none;cursor:pointer;display:grid;place-items:center;transition:.2s}
 .j-orb::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(54,226,255,.4);animation:pulse 2s ease-in-out infinite}
-.j-txt{flex:1;font-size:13px;color:var(--txt-mid)}
-.j-txt b{color:var(--cyan)}
-.j-cursor{display:inline-block;width:7px;height:15px;background:var(--cyan);vertical-align:middle;animation:blink 1s steps(1) infinite;margin-left:1px}
-.j-in{background:transparent;border:0;color:var(--txt);font-family:'Inter';font-size:13px;flex:1;outline:none}
-.j-key{font-family:'JetBrains Mono';font-size:10px;color:var(--txt-dim);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+.j-orb svg{width:13px;height:13px;stroke:rgba(8,11,20,.85);stroke-width:2.2;position:relative;z-index:1}
+.j-orb.listening{box-shadow:0 0 28px var(--cyan),0 0 10px var(--cyan);filter:brightness(1.2)}
+.j-in{background:transparent;border:0;color:var(--txt);font-family:'JetBrains Mono';font-size:12px;flex:1;outline:none;
+  letter-spacing:.02em}
+.j-in::placeholder{color:var(--txt-dim);font-family:'JetBrains Mono';font-size:12px}
+.j-send{font-family:'JetBrains Mono';font-size:10px;color:var(--txt-dim);border:1px solid var(--line);
+  border-radius:6px;padding:4px 10px;background:transparent;cursor:pointer;white-space:nowrap;
+  letter-spacing:.06em;transition:.18s;flex-shrink:0}
+.j-send:hover{color:var(--cyan);border-color:rgba(54,226,255,.45)}
+.otis-resp{position:absolute;bottom:calc(100% + 10px);left:0;right:0;
+  background:linear-gradient(160deg,rgba(14,20,34,.98),rgba(8,11,20,.98));
+  border:1px solid rgba(54,226,255,.22);border-radius:13px;padding:14px 16px;
+  display:none;animation:rise .28s ease both;
+  box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 16px rgba(54,226,255,.08)}
+.otis-resp.show{display:block}
+.otis-resp .or-label{font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;opacity:.75}
+.otis-resp .or-ans{font-size:13px;color:var(--txt-mid);line-height:1.6}
+.otis-resp .or-ans b{color:var(--txt)}
 
 /* morning briefing */
 .briefbtn{display:inline-flex;align-items:center;gap:9px;font-family:'Space Grotesk';font-weight:700;
@@ -357,6 +374,50 @@ body{
 .brief-act.primary:hover{box-shadow:0 0 20px rgba(54,226,255,.4);color:var(--space)}
 .brief-foot{font-family:'JetBrains Mono';font-size:10px;color:var(--txt-dim);margin-top:12px;line-height:1.5}
 
+/* cmd v2 layout */
+.cmd-grid-3{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:14px;margin-top:14px}
+@media(max-width:1100px){.cmd-grid-3{grid-template-columns:1fr}}
+.cmd-panel{display:flex;flex-direction:column;min-height:340px}
+
+/* marketplace items */
+.mkt-item{padding:13px 0;border-bottom:1px solid var(--line)}
+.mkt-item:last-of-type{border:0;padding-bottom:4px}
+.mkt-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.mkt-name{font-size:13px;font-weight:600}
+.mkt-live{font-family:'JetBrains Mono';font-size:9px;letter-spacing:.1em;color:var(--green);display:flex;align-items:center;gap:4px}
+.mkt-live::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.mkt-rev{font-family:'Space Grotesk';font-weight:700;font-size:24px;margin:2px 0 1px;letter-spacing:-.01em}
+.mkt-meta{font-family:'JetBrains Mono';font-size:10px;color:var(--txt-dim)}
+.mkt-bar-wrap{height:3px;background:rgba(54,226,255,.1);border-radius:2px;margin-top:10px;overflow:hidden}
+.mkt-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--cyan-dim));transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.mkt-connect{width:100%;margin-top:16px;padding:11px;border:1px dashed var(--line-strong);
+  border-radius:10px;background:transparent;color:var(--txt-dim);font-family:'JetBrains Mono';
+  font-size:9.5px;letter-spacing:.1em;cursor:pointer;transition:.2s;text-transform:uppercase;text-align:center}
+.mkt-connect:hover{border-color:rgba(54,226,255,.4);color:var(--cyan)}
+
+/* O.T.I.S. core panel */
+.otis-canvas-wrap{flex:1;position:relative;overflow:hidden;min-height:200px}
+#otisCanvas{position:absolute;inset:0;width:100%;height:100%}
+.otis-status{padding:13px 18px;border-top:1px solid var(--line)}
+.otis-status .os-msg{font-size:12px;color:var(--txt-mid);line-height:1.45}
+.otis-status .os-msg b{color:var(--txt)}
+.otis-stat-row{font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);letter-spacing:.1em;margin-top:5px;
+  display:flex;gap:14px;flex-wrap:wrap}
+.otis-stat-row span{color:var(--cyan-dim)}
+
+/* alert dot style */
+.alertd{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.alertd:last-child{border:0;padding-bottom:2px}
+.alertd .ad-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.alertd.crit .ad-dot{background:var(--red);box-shadow:0 0 7px var(--red)}
+.alertd.warn .ad-dot{background:var(--gold);box-shadow:0 0 7px var(--gold)}
+.alertd.info .ad-dot{background:var(--green);box-shadow:0 0 7px var(--green)}
+.alertd .ad-body{flex:1;min-width:0}
+.alertd .ad-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.alertd .ad-title{font-size:12.5px;font-weight:600;line-height:1.3}
+.alertd .ad-time{font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);white-space:nowrap;flex-shrink:0;margin-top:2px}
+.alertd .ad-desc{font-size:11px;color:var(--txt-mid);margin-top:2px;line-height:1.4}
+
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(max-width:760px){
   .app{grid-template-columns:60px 1fr}
@@ -387,7 +448,7 @@ body{
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div class="brandname">AI<b>VENGERS</b></div>
+      <div class="brandname"><b>O.T.I.S.</b><span class="otis-sub">Operations Tracking Intelligence System</span></div>
       <div class="crumb" id="crumb">// COMMAND CENTER</div>
       <div class="ticker"><div class="ticker-track" id="ticker"></div></div>
       <div class="sys"><span class="dot"></span> ALL SYSTEMS NOMINAL · 7 CHANNELS LINKED</div>
@@ -395,12 +456,15 @@ body{
     <div class="view" id="view"></div>
   </div>
 
-  <!-- JARVIS -->
+  <!-- O.T.I.S. Input -->
   <div class="jarvis">
+    <div class="otis-resp" id="otisResp"></div>
     <div class="j-inner">
-      <div class="j-orb"></div>
-      <div class="j-txt" id="jtxt"></div>
-      <span class="j-key">⌘K</span>
+      <button class="j-orb" id="jMic" onclick="toggleVoice()" aria-label="Voice input">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg>
+      </button>
+      <input class="j-in" id="jInput" placeholder="Ask O.T.I.S. anything — 'why did revenue spike yesterday?'" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')submitOtis()"/>
+      <button class="j-send" onclick="submitOtis()">ENTER ↵</button>
     </div>
   </div>
 </div>
@@ -435,10 +499,10 @@ const SKUS=[
 
 /* headline KPIs for the Command Center tiles + Morning Briefing */
 const CMD_KPIS=[
-  {l:"Revenue Today",t:48392,pre:"$",d:"+12.4%",dc:"up",sp:[31,34,33,40,38,44,48],c:"#36E2FF"},
-  {l:"Units Today",t:1284,d:"+8.1%",dc:"up",sp:[0.9,1.0,0.98,1.12,1.06,1.2,1.28].map(x=>x*1000),c:"#FFB627"},
-  {l:"Blended TACoS",t:9.2,suf:"%",dec:1,d:"-0.4pt",dc:"up",sp:[11,10.6,10.2,9.8,9.6,9.4,9.2],c:"#2EE6A0"},
-  {l:"Net Margin",t:34.7,suf:"%",dec:1,d:"+1.2pt",dc:"up",sp:[31,32,33,33,34,34,35],c:"#9B8CFF"},
+  {l:"Revenue Today",t:48392,pre:"$",d:"+12.4%",dc:"up",cmp:"vs yesterday",sp:[31,34,33,40,38,44,48],c:"#36E2FF"},
+  {l:"Units Sold",t:1284,d:"+8.1%",dc:"up",cmp:"vs yesterday",sp:[0.9,1.0,0.98,1.12,1.06,1.2,1.28].map(x=>x*1000),c:"#FFB627"},
+  {l:"Blended TACoS",t:9.2,suf:"%",dec:1,d:"-0.4pt",dc:"up",cmp:"target ≤ 10%",sp:[11,10.6,10.2,9.8,9.6,9.4,9.2],c:"#2EE6A0"},
+  {l:"Net Margin",t:34.7,suf:"%",dec:1,d:"+1.2pt",dc:"up",cmp:"vs 30-day avg",sp:[31,32,33,33,34,34,35],c:"#9B8CFF"},
 ];
 
 const DST={
@@ -599,64 +663,141 @@ function countUp(el,target,opt={}){
 }
 
 /* ---------- views ---------- */
+let _otisRAF=null;
+
 function vCommand(){
+  if(_otisRAF){cancelAnimationFrame(_otisRAF);_otisRAF=null;}
+  const totalRev=CHANNELS.reduce((s,c)=>s+parseFloat(c.rev.replace(/[$,]/g,"")),0);
+  $("#crumb").textContent="";
   view.innerHTML=`
-  <div class="vhead">
-    <div><div class="vtitle">Command Center</div><div class="vsub">Cross-channel business health · real-time</div></div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:11px">
-      <button class="briefbtn" onclick="runMorningBriefing()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 13l1.6-3.6L10 8 6.6 6.4 5 3 3.4 6.4 0 8l3.4 1.4L5 13z" transform="translate(3 2)"/><path d="M17 11l.9-2 2-.9-2-.9-.9-2-.9 2-2 .9 2 .9.9 2z"/></svg>
-        Run Morning Briefing
-      </button>
-      <div class="vmeta">SUN 14 JUN 2026 · 09:42 EDT<br>LAST SYNC 38s AGO</div>
-    </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div class="vtitle" style="font-weight:800">Command Center</div>
+    <button class="briefbtn" onclick="runMorningBriefing()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 13l1.6-3.6L10 8 6.6 6.4 5 3 3.4 6.4 0 8l3.4 1.4L5 13z" transform="translate(3 2)"/><path d="M17 11l.9-2 2-.9-2-.9-.9-2-.9 2-2 .9 2 .9.9 2z"/></svg>
+      Run Morning Briefing
+    </button>
   </div>
   <div class="kpis">
-    ${CMD_KPIS.map(k=>`<div class="panel kpi"><span class="corner tl"></span>
+    ${CMD_KPIS.map(k=>`<div class="panel kpi" style="animation-delay:.04s">
       <div class="lab">${k.l}</div>
       <div class="val" data-t="${k.t}" data-pre="${k.pre||''}" data-suf="${k.suf||''}" data-dec="${k.dec||0}">0</div>
-      <div class="delta ${k.dc}">${k.dc==='up'?'▲':k.dc==='dn'?'▼':'■'} ${k.d} <span style="color:var(--txt-dim)">vs yest</span></div>
+      <div class="delta ${k.dc}">${k.dc==='up'?'▲':k.dc==='dn'?'▼':'■'} ${k.d} <span style="color:var(--txt-dim)">${k.cmp}</span></div>
       ${spark(k.sp,k.c)}
     </div>`).join("")}
   </div>
-  <div class="grid cmd-grid">
-    <div class="panel p-pad" style="grid-row:span 2;animation-delay:.05s">
-      <span class="corner tl"></span><span class="corner br"></span>
-      <div class="p-h"><div class="p-t">Business Health <span class="acc">// AIVENGERS CORE</span></div><div style="font-family:'JetBrains Mono';font-size:10px;color:var(--green)">◉ OPTIMAL</div></div>
-      <div class="reactor-wrap">
-        <div class="reactor">${reactor(87)}
-          <div class="r-core"><div><div class="r-score" id="hscore">0</div><div class="r-lab">Health Index</div><div class="r-stat">Top 6% of tracked sellers</div></div></div>
+  <div class="cmd-grid-3">
+    <!-- Marketplaces -->
+    <div class="panel p-pad cmd-panel" style="animation-delay:.06s">
+      <div class="p-h"><div class="p-t">Marketplaces</div><div style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);letter-spacing:.12em">TODAY</div></div>
+      ${CHANNELS.filter(c=>c.sub.includes("live")).slice(0,2).map(c=>{
+        const rev=parseFloat(c.rev.replace(/[$,]/g,""));
+        const pct=Math.round(rev/totalRev*100);
+        return `<div class="mkt-item">
+          <div class="mkt-row1"><span class="mkt-name">${c.n}</span><span class="mkt-live">LIVE</span></div>
+          <div class="mkt-rev">${c.rev}</div>
+          <div class="mkt-meta">${CHANNELS.find(x=>x.n===c.n)?Math.round(rev/35.99)||"—":"—"} units · TACoS ${c.tacos}</div>
+          <div class="mkt-bar-wrap"><div class="mkt-bar-fill" style="width:${pct}%"></div></div>
+        </div>`;
+      }).join("")}
+      <button class="mkt-connect">+ Connect TikTok Shop</button>
+    </div>
+
+    <!-- O.T.I.S. Core -->
+    <div class="panel cmd-panel" style="animation-delay:.08s">
+      <div class="p-h" style="padding:16px 18px 0;flex-shrink:0">
+        <div class="p-t">O.T.I.S. <span class="acc">// CORE</span></div>
+        <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--green);display:flex;align-items:center;gap:5px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);display:inline-block;animation:blink 2.4s ease-in-out infinite"></span>ONLINE
         </div>
-        <div class="subgauges">
-          ${[["Organic",71,"#36E2FF"],["Inventory",82,"#FFB627"],["Reviews",92,"#2EE6A0"],["PPC Eff.",76,"#9B8CFF"]].map(g=>
-            `<div class="sg"><div class="ring">${ringSVG(g[1],g[2])}</div><div class="sgv" style="color:${g[2]}">${g[1]}</div><div class="sgl">${g[0]}</div></div>`).join("")}
+      </div>
+      <div class="otis-canvas-wrap"><canvas id="otisCanvas"></canvas></div>
+      <div class="otis-status">
+        <div class="os-msg">PPC sweep complete: <b>3 bids rebalanced</b>, est. <b>-$41/day</b> waste removed.</div>
+        <div class="otis-stat-row">
+          <span><span>6</span> AGENTS ACTIVE</span>
+          <span><span>3</span> TASKS QUEUED</span>
+          <span><span>0</span> ERRORS</span>
         </div>
       </div>
     </div>
-    <div class="panel p-pad" style="animation-delay:.1s">
-      <span class="corner tl"></span>
-      <div class="p-h"><div class="p-t">Active Alerts</div><div style="font-family:'JetBrains Mono';font-size:10px;color:var(--red)">1 CRITICAL · 2 WARN</div></div>
-      ${ALERTS.map(a=>`<div class="alert ${a.lvl}"><div class="ico">${a.ico}</div><div><div class="at">${a.t}</div><div class="ad">${a.d}</div></div><div class="ttag">${a.when}</div></div>`).join("")}
-    </div>
-    <div class="panel p-pad" style="animation-delay:.15s">
-      <span class="corner br"></span>
-      <div class="p-h"><div class="p-t">Agent Activity</div><div style="font-family:'JetBrains Mono';font-size:10px;color:var(--cyan)">6 ACTIVE</div></div>
-      ${FEED.map(f=>`<div class="feed-row"><div class="ab" style="background:${f.bg}">${f.ab}</div><div><span class="who">${f.who}</span><div style="margin-top:1px">${f.act}</div></div><div class="when">${f.when}</div></div>`).join("")}
-    </div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr;margin-top:16px">
-    <div class="panel p-pad" style="animation-delay:.2s">
-      <span class="corner tl"></span>
-      <div class="p-h"><div class="p-t">Top Performing Products · Today</div><div style="font-family:'JetBrains Mono';font-size:10px;color:var(--txt-dim)">BY REVENUE</div></div>
-      ${SKUS.map((s,i)=>`<div class="tp-row"><div class="tp-rank">${i+1}</div>
-        <div><div class="tp-name">${s.n}</div><div class="tp-bar"><i style="width:${s.share}%"></i></div></div>
-        <div><div class="tp-rev">$${s.rev.toLocaleString()}</div><div class="tp-sub">${s.units} units</div></div></div>`).join("")}
+
+    <!-- Active Alerts -->
+    <div class="panel p-pad cmd-panel" style="animation-delay:.1s">
+      <div class="p-h">
+        <div class="p-t">Active Alerts</div>
+        <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim)">
+          <span style="color:var(--red)">1 CRITICAL</span> · <span style="color:var(--gold)">2 WARN</span>
+        </div>
+      </div>
+      ${ALERTS.map(a=>`<div class="alertd ${a.lvl}">
+        <div class="ad-dot"></div>
+        <div class="ad-body">
+          <div class="ad-head"><span class="ad-title">${a.t}</span><span class="ad-time">${a.when}</span></div>
+          <div class="ad-desc">${a.d}</div>
+        </div>
+      </div>`).join("")}
     </div>
   </div>`;
-  // animate
-  requestAnimationFrame(()=>{$("#arc").style.strokeDashoffset=(2*Math.PI*104)-(87/100)*(2*Math.PI*104);});
-  countUp($("#hscore"),87);
+
   document.querySelectorAll(".kpi .val").forEach(el=>countUp(el,+el.dataset.t,{pre:el.dataset.pre,suf:el.dataset.suf,dec:+el.dataset.dec}));
+  initOtisNetwork();
+}
+
+function initOtisNetwork(){
+  const canvas=document.getElementById("otisCanvas");
+  if(!canvas) return;
+  requestAnimationFrame(()=>{
+    const W=canvas.offsetWidth, H=canvas.offsetHeight;
+    if(!W||!H){setTimeout(initOtisNetwork,60);return;}
+    const dpr=window.devicePixelRatio||1;
+    canvas.width=W*dpr; canvas.height=H*dpr;
+    const ctx=canvas.getContext("2d");
+    ctx.scale(dpr,dpr);
+
+    const nodes=[];
+    // central hub
+    nodes.push({x:W/2,y:H*0.45,r:3.8,vx:0,vy:0,phase:0,hub:true});
+    // ring nodes
+    for(let i=0;i<8;i++){
+      const a=(i/8)*Math.PI*2, d=52+Math.random()*44;
+      nodes.push({x:W/2+Math.cos(a)*d,y:H*0.45+Math.sin(a)*d,
+        r:1.8+Math.random()*.8,vx:(Math.random()-.5)*.14,vy:(Math.random()-.5)*.14,phase:Math.random()*Math.PI*2});
+    }
+    // outer scatter
+    for(let i=0;i<12;i++){
+      nodes.push({x:W*.08+Math.random()*W*.84,y:H*.08+Math.random()*H*.84,
+        r:1+Math.random()*.7,vx:(Math.random()-.5)*.09,vy:(Math.random()-.5)*.09,phase:Math.random()*Math.PI*2});
+    }
+
+    function draw(){
+      _otisRAF=requestAnimationFrame(draw);
+      ctx.clearRect(0,0,W,H);
+      // edges
+      for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[j].x-nodes[i].x,dy=nodes[j].y-nodes[i].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.strokeStyle=`rgba(54,226,255,${.14*(1-d/120)})`;ctx.lineWidth=.7;ctx.stroke();}
+      }
+      // nodes
+      nodes.forEach(n=>{
+        n.phase+=.016;
+        const pulse=.55+.35*Math.sin(n.phase);
+        if(n.hub){
+          const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,20);
+          g.addColorStop(0,"rgba(54,226,255,.35)");g.addColorStop(1,"rgba(54,226,255,0)");
+          ctx.beginPath();ctx.arc(n.x,n.y,20,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+        }
+        ctx.beginPath();ctx.arc(n.x,n.y,n.hub?n.r:n.r*pulse,0,Math.PI*2);
+        ctx.fillStyle=n.hub?`rgba(54,226,255,${.7+.25*Math.sin(n.phase)})`:`rgba(180,220,255,${pulse*.6})`;
+        ctx.fill();
+        if(!n.hub){
+          n.x+=n.vx;n.y+=n.vy;
+          if(n.x<4||n.x>W-4)n.vx*=-1;if(n.y<4||n.y>H-4)n.vy*=-1;
+        }
+      });
+    }
+    draw();
+  });
 }
 
 function vSales(){
@@ -818,6 +959,7 @@ const CRUMBS={command:"COMMAND CENTER",sales:"DAILY SALES TRACKER",inventory:"IN
 
 document.querySelectorAll(".navbtn[data-view]").forEach(b=>{
   b.addEventListener("click",()=>{
+    if(_otisRAF){cancelAnimationFrame(_otisRAF);_otisRAF=null;}
     document.querySelectorAll(".navbtn").forEach(x=>x.classList.remove("on"));
     b.classList.add("on");
     const v=b.dataset.view;
@@ -834,28 +976,47 @@ const tk=[["Titan Pro Bands",'<b>$14,820</b>','<span class="up">▲ 5.1%</span>'
 ["Review Rating",'<b>4.6★</b>','<span class="up">stable</span>'],["Net Margin",'<b>34.7%</b>','<span class="up">▲ 1.2pt</span>']];
 $("#ticker").innerHTML=tk.concat(tk).map(t=>`<span class="ti">${t[0]} ${t[1]} ${t[2]}</span>`).join("");
 
-/* jarvis typing */
-const jlines=[
-  "Good morning. Revenue is up <b>12.4%</b> on yesterday and the core reads <b>87 — optimal</b>.",
-  "One item needs you: <b>Volt lost the buy box</b> to a $2.40 undercut. Want me to investigate?",
-  "Supply Chain drafted <b>PO #4471</b> for Apex Bottle. Approve when ready.",
-  "Ask me anything — try <b>\"why did US% jump on Titan Pro?\"</b>",
-];
-let li=0,ci=0,jt=$("#jtxt");
-function typeJ(){
-  const line=jlines[li];
-  if(ci<=line.length){
-    // type by visible char, keeping tags intact
-    let html=line.slice(0,ci);
-    const open=(html.match(/<b>/g)||[]).length,close=(html.match(/<\/b>/g)||[]).length;
-    if(open>close)html+="</b>";
-    jt.innerHTML=html+'<span class="j-cursor"></span>';
-    ci++;setTimeout(typeJ,18);
-  }else{
-    setTimeout(()=>{li=(li+1)%jlines.length;ci=0;typeJ();},3400);
-  }
+/* O.T.I.S. input */
+const OTIS_RESP={
+  'revenue':'Revenue is up <b>12.4%</b> today. Titan Pro Bands drove 68% of the gain after earning the Best Seller badge in Resistance Bands. Top source: organic search.',
+  'tacos':'Blended TACoS sits at <b>9.2%</b>, down 0.4pt. FlexCore Ab Roller is running hot at <b>11.8%</b> — I have 6 keyword bids flagged for reduction. Approve the batch?',
+  'buy box':'Volt Massage Gun Mini lost the buy box <b>4 minutes ago</b> to a seller undercutting by $2.40. I recommend matching within $1.00 or filing a hijacker report. Want me to draft it?',
+  'stock':'Apex Stainless Bottle has <b>12 days of cover</b> at current velocity. Supply Chain has drafted PO #4471 for 1,500 units from your primary supplier — awaiting approval.',
+  'margin':'Net margin is <b>34.7%</b>, up 1.2pt vs the 30-day average. The gain is driven by improved TACoS on Titan Pro Bands and lower FBA storage fees.',
+  'inventory':'Nimbus Posture Corrector is critical at <b>5 days of cover</b>. Volt Massage Gun Mini is fully in transit. Apex Bottle reorder is drafted and awaiting your approval.',
+};
+function getOtisResp(q){
+  const l=q.toLowerCase();
+  for(const[k,v] of Object.entries(OTIS_RESP)) if(l.includes(k)) return v;
+  return `Analyzing <b>${q.trim()}</b> — connect live API feeds for real-time breakdown. I'll have a full answer waiting.`;
 }
-typeJ();
+function submitOtis(){
+  const inp=document.getElementById('jInput');
+  const q=(inp.value||'').trim(); if(!q) return;
+  inp.value='';
+  const r=document.getElementById('otisResp');
+  r.innerHTML=`<div class="or-label">O.T.I.S. · Response</div><div class="or-ans">${getOtisResp(q)}</div>`;
+  r.classList.add('show');
+  clearTimeout(r._t);
+  r._t=setTimeout(()=>r.classList.remove('show'),8000);
+}
+let _jRec=null,_jListening=false;
+function toggleVoice(){
+  if(_jListening){_jRec&&_jRec.stop();return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const inp=document.getElementById('jInput');
+  if(!SR){inp.placeholder='Voice not supported — type your question';
+    setTimeout(()=>inp.placeholder="Ask O.T.I.S. anything — 'why did revenue spike yesterday?'",3000);return;}
+  _jRec=new SR();_jRec.lang='en-US';_jRec.interimResults=true;
+  _jRec.onstart=()=>{_jListening=true;document.getElementById('jMic').classList.add('listening');inp.placeholder='Listening...';};
+  _jRec.onresult=e=>{inp.value=Array.from(e.results).map(r=>r[0].transcript).join('');};
+  _jRec.onend=()=>{
+    _jListening=false;document.getElementById('jMic').classList.remove('listening');
+    inp.placeholder="Ask O.T.I.S. anything — 'why did revenue spike yesterday?'";
+    if(inp.value.trim()) submitOtis();
+  };
+  _jRec.start();
+}
 
 /* ---------- morning briefing ---------- */
 const BRIEF_TO="melisavong@gmail.com";
