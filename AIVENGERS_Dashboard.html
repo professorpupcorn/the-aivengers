@@ -424,6 +424,94 @@ body{
   .ticker,.crumb{display:none}
   .reactor{width:200px;height:200px}
 }
+
+/* ── O.T.I.S. Intelligence view ── */
+.intel-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:16px}
+@media(max-width:1100px){.intel-grid{grid-template-columns:1fr}}
+.intel-col{display:flex;flex-direction:column;gap:14px}
+.deck-btns{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.deck-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;
+  border:1px solid var(--line);background:rgba(8,11,20,.4);color:var(--txt-mid);
+  cursor:pointer;transition:.2s;font-family:'JetBrains Mono';font-size:11px;
+  letter-spacing:.06em;text-align:left;text-transform:uppercase;width:100%}
+.deck-btn:hover{border-color:rgba(54,226,255,.4);color:var(--cyan);background:rgba(54,226,255,.06)}
+.deck-btn.fired{border-color:rgba(46,230,160,.4);color:var(--green)}
+.deck-dot{width:7px;height:7px;border-radius:50%;background:var(--line-strong);flex-shrink:0;transition:.2s}
+.deck-btn:hover .deck-dot{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+.deck-btn.fired .deck-dot{background:var(--green);box-shadow:0 0 6px var(--green)}
+.deck-label{flex:1}
+.deck-arrow{opacity:.4;transition:.2s}
+.deck-btn:hover .deck-arrow{opacity:1;transform:translateX(3px)}
+.deck-hint{font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);margin-top:9px;letter-spacing:.06em}
+.dir-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:.15s}
+.dir-item:last-child{border:0}
+.dir-item:hover .dir-text{color:var(--txt)}
+.dir-box{width:16px;height:16px;border:1.5px solid var(--line-strong);border-radius:4px;flex-shrink:0;
+  margin-top:1px;display:grid;place-items:center;transition:.18s;font-size:10px;color:transparent}
+.dir-item.done .dir-box{background:var(--green);border-color:var(--green);color:var(--space)}
+.dir-item.done .dir-text{text-decoration:line-through;color:var(--txt-dim)}
+.dir-text{font-size:13px;color:var(--txt-mid);line-height:1.35}
+.dir-date{font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);margin-top:10px;letter-spacing:.06em}
+.sched-item{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.sched-item:last-child{border:0}
+.sched-item.now{background:rgba(54,226,255,.05);border-radius:7px;padding:9px 10px;border:0;margin:4px -10px;position:relative}
+.sched-item.now::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:2px;height:66%;background:var(--cyan);border-radius:0 2px 2px 0}
+.sched-time{font-family:'JetBrains Mono';font-size:11px;color:var(--txt-dim);min-width:38px;flex-shrink:0;margin-top:1px}
+.sched-item.now .sched-time{color:var(--cyan)}
+.sched-label{font-size:12.5px;color:var(--txt-mid)}
+.sched-item.now .sched-label{color:var(--txt);font-weight:600}
+.wire-item{display:flex;gap:8px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:.15s}
+.wire-item:last-child{border:0}
+.wire-bullet{color:var(--cyan);font-size:12px;flex-shrink:0;margin-top:2px}
+.wire-text{font-size:12.5px;color:var(--txt-mid);line-height:1.4}
+.wire-item:hover .wire-text{color:var(--txt)}
+.doc-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:.15s}
+.doc-row:last-child{border:0}
+.doc-row:hover .doc-skill{color:var(--cyan)}
+.doc-skill{font-size:12.5px;color:var(--txt-mid);text-transform:capitalize;display:flex;align-items:center;gap:7px}
+.doc-age{font-family:'JetBrains Mono';font-size:10px;color:var(--txt-dim)}
+.audio-wave{display:flex;align-items:flex-end;gap:2px;height:30px;margin-top:12px;padding:0 2px}
+.audio-wave i{display:block;width:3px;border-radius:2px;background:var(--cyan-dim);opacity:.4;
+  height:4px;animation:aw-idle 2.4s ease-in-out infinite;animation-delay:calc(var(--i) * 0.07s)}
+.audio-wave.live i{background:var(--cyan);opacity:.9;animation-name:aw-live}
+@keyframes aw-idle{0%,100%{height:4px}50%{height:10px}}
+@keyframes aw-live{0%,100%{height:4px}50%{height:calc(4px + var(--i) * 1.4px)}}
+/* report overlay */
+.rep-overlay{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  padding:24px;background:rgba(4,6,12,.78);backdrop-filter:blur(7px)}
+.rep-overlay.show{display:flex;animation:rise .3s ease both}
+.rep-modal{width:min(680px,100%);max-height:88vh;overflow-y:auto;
+  background:linear-gradient(160deg,rgba(16,24,42,.98),rgba(8,11,20,.98));
+  border:1px solid rgba(54,226,255,.35);border-radius:18px;
+  box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 34px rgba(54,226,255,.1);
+  scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+.rep-head{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:rgba(14,20,34,.99);border-radius:18px 18px 0 0;z-index:1;backdrop-filter:blur(8px)}
+.rep-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:15px;
+  flex-shrink:0;background:rgba(54,226,255,.1);border:1px solid rgba(54,226,255,.28)}
+.rep-title{font-family:'Space Grotesk';font-weight:700;font-size:16px}
+.rep-sub{font-family:'JetBrains Mono';font-size:10px;color:var(--cyan);letter-spacing:.14em;margin-top:2px}
+.rep-x{margin-left:auto;background:transparent;border:1px solid var(--line);color:var(--txt-mid);
+  width:30px;height:30px;border-radius:9px;cursor:pointer;font-size:15px}
+.rep-x:hover{color:var(--txt);border-color:var(--line-strong)}
+.rep-body{padding:22px}
+.rep-md h3{font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--cyan);
+  letter-spacing:.2em;text-transform:uppercase;margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.rep-md h3:first-child{margin-top:0}
+.rep-md p{font-size:13px;color:var(--txt-mid);line-height:1.65;margin-bottom:10px}
+.rep-md p b,.rep-md p strong{color:var(--txt)}
+.rep-md ul{list-style:none;padding:0;margin-bottom:10px}
+.rep-md li{font-size:12.5px;color:var(--txt-mid);padding:6px 0;border-bottom:1px solid rgba(86,109,150,.08);display:flex;gap:8px;line-height:1.4}
+.rep-md li::before{content:"▸";color:var(--cyan);flex-shrink:0}
+.rep-md li:last-child{border:0}
+.rep-md code{font-family:'JetBrains Mono';font-size:11px;background:rgba(54,226,255,.08);color:var(--cyan);padding:2px 6px;border-radius:4px}
+.rep-acts{display:flex;gap:10px;flex-wrap:wrap;padding:0 22px 20px}
+.rep-act{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono';font-size:11px;
+  letter-spacing:.04em;padding:9px 14px;border-radius:10px;border:1px solid var(--line-strong);
+  background:var(--panel-2);color:var(--txt);cursor:pointer;transition:.18s}
+.rep-act:hover{border-color:rgba(54,226,255,.5);color:var(--cyan)}
+.rep-act.primary{background:linear-gradient(160deg,var(--cyan),var(--cyan-dim));border-color:transparent;color:var(--space);font-weight:700}
+.rep-act.primary:hover{box-shadow:0 0 20px rgba(54,226,255,.4);color:var(--space)}
 </style>
 </head>
 <body>
@@ -440,6 +528,7 @@ body{
     <button class="navbtn" data-view="marketing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l16-7-4 16-4-6-8-3z"/></svg><span class="tip">Marketing & Ads</span></button>
     <button class="navbtn" data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="11" rx="1"/><rect x="17" y="4" width="4" height="7" rx="1"/></svg><span class="tip">Projects & Tasks</span></button>
     <button class="navbtn" data-view="agents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/><circle cx="12" cy="8" r="1.4" fill="currentColor"/></svg><span class="tip">Agent Roster</span></button>
+    <button class="navbtn" data-view="intel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg><span class="tip">O.T.I.S. Intel</span></button>
     <div class="sp"></div>
     <button class="navbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="tip">Settings</span></button>
     <div class="av">TS</div>
@@ -465,6 +554,24 @@ body{
       </button>
       <input class="j-in" id="jInput" placeholder="Ask O.T.I.S. anything — 'why did revenue spike yesterday?'" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')submitOtis()"/>
       <button class="j-send" onclick="submitOtis()">ENTER ↵</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT OVERLAY -->
+<div class="rep-overlay" id="repOverlay">
+  <div class="rep-modal">
+    <div class="rep-head">
+      <div class="rep-icon" id="repIcon"></div>
+      <div><div class="rep-title" id="repTitle"></div><div class="rep-sub" id="repSub"></div></div>
+      <button class="rep-x" onclick="closeReport()" aria-label="Close">✕</button>
+    </div>
+    <div class="rep-body rep-md" id="repBody"></div>
+    <div class="rep-acts">
+      <button class="rep-act primary" onclick="emailReport()">✉ Email report</button>
+      <button class="rep-act" onclick="readReport()">🔊 Read aloud</button>
+      <button class="rep-act" onclick="stopRepVoice()">⏹ Stop</button>
+      <button class="rep-act" onclick="closeReport()">✕ Close</button>
     </div>
   </div>
 </div>
@@ -954,8 +1061,313 @@ function vAgents(){
   </div>`;
 }
 
-const VIEWS={command:vCommand,sales:vSales,inventory:vInventory,marketing:vMarketing,projects:vProjects,agents:vAgents};
-const CRUMBS={command:"COMMAND CENTER",sales:"DAILY SALES TRACKER",inventory:"INVENTORY · SUPPLY CHAIN",marketing:"MARKETING · ADS",projects:"PROJECTS · TASKS",agents:"AGENT ROSTER"};
+/* ── O.T.I.S. Intelligence data ── */
+const INTEL_SKILLS=[
+  {id:'morning-report',label:'AM Report'},
+  {id:'inbox-brief',label:'Inbox Brief'},
+  {id:'plan-today',label:'Plan Today'},
+  {id:'plan-tomorrow',label:'Plan Tmrw'},
+  {id:'vault-cleanup',label:'Vault Clean'},
+];
+
+const AM_WIRE=[
+  'Revenue up 12.4% day-over-day — Titan Pro Bands earned Best Seller badge in Resistance Bands.',
+  'Buy box lost on Volt Massage Gun Mini — competitor undercut by $2.40, action required.',
+  'Apex Stainless Bottle at 12-day cover — PO #4471 drafted, awaiting approval.',
+  'Blended TACoS at 9.2%, down 0.4pt — PPC sweep removed $41/day waste.',
+];
+
+const RECENT_DOCS=[
+  {skill:'morning-report',label:'morning report',icon:'🌅',age:'2h ago'},
+  {skill:'inbox-brief',label:'inbox brief',icon:'📬',age:'4h ago'},
+  {skill:'plan-today',label:'plan today',icon:'📋',age:'6h ago'},
+  {skill:'plan-tomorrow',label:'plan tomorrow',icon:'🗓',age:'1d ago'},
+];
+
+const SKILL_REPORTS={
+  'morning-report':{
+    icon:'🌅',title:'Morning Report',sub:'AM INTEL · MON 7 JUL 2026',
+    content:`<h3>Business Overview</h3>
+<p>Revenue today: <b>$48,392</b>, up 12.4% vs yesterday. Units sold: <b>1,284</b>, up 8.1%. Blended TACoS: <b>9.2%</b>, down 0.4pt. Net margin: <b>34.7%</b>, up 1.2pt vs 30-day average.</p>
+<h3>Top Performer</h3>
+<p><b>Titan Pro Bands</b> earned the Best Seller badge in Resistance Bands this morning, driving 68% of the revenue gain. 1,100 units at $14,820. Organic share: 71%.</p>
+<h3>Action Required</h3>
+<ul>
+<li><b>BUY BOX LOST</b> — Volt Massage Gun Mini, undercut by $2.40. Match within $1.00 or file hijacker report.</li>
+<li><b>RESTOCK</b> — Apex Stainless Bottle at 12-day cover. PO #4471 (1,500 units) awaiting approval.</li>
+<li><b>PPC</b> — 6 keyword bids flagged on FlexCore Ab Roller (TACoS 11.8%). Approve the batch?</li>
+</ul>
+<h3>Market Pulse</h3>
+<p>Health index: <b>87 / 100</b> — OPTIMAL, top 6% of tracked sellers. Competitor entered primary category at $3 below MAP. Monitoring.</p>`,
+    email:`Morning Report — Mon 7 Jul 2026\n\nRevenue: $48,392 (+12.4%)\nUnits: 1,284 (+8.1%)\nTACoS: 9.2% (-0.4pt)\nNet Margin: 34.7% (+1.2pt)\n\nAction Required:\n- Buy box lost on Volt Massage Gun Mini\n- Approve PO #4471 for Apex Stainless Bottle\n- Approve PPC bid reduction batch\n\nGenerated by O.T.I.S.`
+  },
+  'inbox-brief':{
+    icon:'📬',title:'Inbox Brief',sub:'INBOX INTEL · MON 7 JUL 2026',
+    content:`<h3>New Messages (last 24h)</h3>
+<ul>
+<li><b>Jake @ SaferCBD</b> — Partnership follow-up, 2 days ago. Response needed.</li>
+<li><b>FBA Reimbursement Bot</b> — $340 auto-credit applied to your account.</li>
+<li><b>Amazon Seller Central</b> — New buyer feedback: 5 stars. "Fast shipping, great product."</li>
+<li><b>3PL Logistics</b> — PO #4471 acknowledgment received, tentative ship date Jul 14.</li>
+</ul>
+<h3>Flagged for Action</h3>
+<ul>
+<li>Response needed: Jake @ SaferCBD (partnership discussion, 2 days pending)</li>
+<li>Review: Amazon policy update on bundled product listing requirements (Aug 1 effective)</li>
+</ul>
+<h3>Summary</h3>
+<p>23 unread across all channels. <b>2 require action within 24 hours.</b> No SLA breaches detected.</p>`,
+    email:`Inbox Brief — Mon 7 Jul 2026\n\n23 unread messages. 2 require action:\n\n1. Jake @ SaferCBD — partnership follow-up (2 days)\n2. Amazon policy update — bundle listing rules (Aug 1)\n\nGenerated by O.T.I.S.`
+  },
+  'plan-today':{
+    icon:'📋',title:'Plan Today',sub:'DIRECTIVES · MON 7 JUL 2026',
+    content:`<h3>Priority Actions</h3>
+<ul>
+<li><b>09:00</b> — Review and approve PPC bid batch (6 keywords, FlexCore Ab Roller)</li>
+<li><b>11:00</b> — Call 3PL re: PO #4471 timing and dock availability</li>
+<li><b>12:00</b> — Price decision on Volt Massage Gun Mini (match or file hijacker report)</li>
+<li><b>15:00</b> — Review August ad creative brief from marketing team</li>
+</ul>
+<h3>Monitoring</h3>
+<ul>
+<li>Buy box — Volt Massage Gun Mini (every 30 min)</li>
+<li>Inventory — Nimbus Posture Corrector at 5-day cover, watch closely</li>
+<li>Reviews — Titan Pro Bands on pace for 200 reviews this week</li>
+</ul>
+<h3>Delegate to Agents</h3>
+<ul>
+<li>PPC Agent — generate bid reduction recommendations for review</li>
+<li>Supply Chain Agent — confirm supplier lead time for emergency reorder</li>
+<li>CX Agent — draft response template for Jake @ SaferCBD</li>
+</ul>`,
+    email:`Plan Today — Mon 7 Jul 2026\n\n1. Approve PPC bid batch (FlexCore, 6 keywords)\n2. Call 3PL re: PO #4471\n3. Resolve Volt Mini buy box\n4. Review August ad creative\n\nGenerated by O.T.I.S.`
+  },
+  'plan-tomorrow':{
+    icon:'🗓',title:'Plan Tomorrow',sub:'PREP · TUE 8 JUL 2026',
+    content:`<h3>Pre-market Checklist</h3>
+<ul>
+<li>Confirm PO #4471 ship date from 3PL supplier</li>
+<li>Check overnight buy box status across all 5 ASINs</li>
+<li>Pull TACoS report for ad performance review</li>
+</ul>
+<h3>Scheduled</h3>
+<ul>
+<li><b>10:00</b> — Weekly sync with supply chain</li>
+<li><b>14:00</b> — Listing optimization review (3 ASINs with declining CTR)</li>
+<li><b>16:30</b> — Competitor pricing analysis debrief</li>
+</ul>
+<h3>Overnight Agent Tasks</h3>
+<ul>
+<li>Trend scan running — results ready by 6 AM</li>
+<li>Review monitoring sweep — flag anything below 4.0 stars</li>
+<li>Keyword rank tracking for top 10 ASINs</li>
+</ul>`,
+    email:`Plan Tomorrow — Tue 8 Jul 2026\n\nKey tasks:\n1. Confirm PO #4471 ship date\n2. Weekly supply chain sync (10:00)\n3. Listing CTR review (3 ASINs)\n\nAgent tasks running overnight.\n\nGenerated by O.T.I.S.`
+  },
+  'vault-cleanup':{
+    icon:'🗂',title:'Vault Cleanup',sub:'MAINTENANCE · MON 7 JUL 2026',
+    content:`<h3>Cleanup Summary</h3>
+<p>Scanned <b>847 files</b> across vault directories. 23 items processed.</p>
+<h3>Archived</h3>
+<ul>
+<li>14 run logs older than 30 days moved to <code>/archive/runs/</code></li>
+<li>6 draft files without final status marked as stale</li>
+<li>3 duplicate intent files resolved</li>
+</ul>
+<h3>Retained</h3>
+<ul>
+<li>3 active deliverables: morning-report, plan-today, inbox-brief</li>
+<li>All metrics history files preserved (90-day window)</li>
+<li>Queue: empty, no orphaned intents found</li>
+</ul>
+<h3>Health</h3>
+<p>Vault size: <b>2.4 MB</b>. Last full backup: 6 hours ago. No errors detected.</p>`,
+    email:`Vault Cleanup — Mon 7 Jul 2026\n\n847 files scanned. 23 processed.\nArchived: 14 old logs, 6 stale drafts\nRetained: 3 active deliverables\nVault health: OK (2.4 MB)\n\nGenerated by O.T.I.S.`
+  },
+};
+
+/* ── Directives (localStorage) ── */
+const DIRECTIVES_KEY='otis_directives';
+const DEFAULT_DIRECTIVES=[
+  {text:'Review PPC bid changes from overnight sweep',done:false},
+  {text:'Approve PO #4471 for Apex Stainless Bottle (1,500 units)',done:false},
+  {text:'Resolve Volt Massage Gun buy box — match price or file hijacker report',done:false},
+];
+function loadDirectives(){
+  try{const r=localStorage.getItem(DIRECTIVES_KEY);if(r)return JSON.parse(r);}catch(e){}
+  return DEFAULT_DIRECTIVES.map(d=>({...d}));
+}
+function saveDirectives(dirs){try{localStorage.setItem(DIRECTIVES_KEY,JSON.stringify(dirs));}catch(e){}}
+function toggleDirective(i){const dirs=loadDirectives();dirs[i].done=!dirs[i].done;saveDirectives(dirs);renderDirectives();}
+function renderDirectives(){
+  const el=document.getElementById('directives');if(!el)return;
+  const dirs=loadDirectives();
+  const today=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+  el.innerHTML=dirs.map((d,i)=>`<div class="dir-item${d.done?' done':''}" onclick="toggleDirective(${i})">
+    <div class="dir-box">${d.done?'✓':''}</div>
+    <span class="dir-text">${d.text}</span>
+  </div>`).join('')+`<div class="dir-date">${today} · today</div>`;
+}
+function editDirectives(){
+  const dirs=loadDirectives();
+  const r=prompt('Edit your top 3 directives (one per line):',dirs.map(d=>d.text).join('\n'));
+  if(!r)return;
+  const newDirs=r.split('\n').filter(l=>l.trim()).slice(0,3).map(t=>({text:t.trim(),done:false}));
+  if(!newDirs.length)return;
+  saveDirectives(newDirs);renderDirectives();
+}
+
+/* ── Skill fire ── */
+const _skillCooldowns={};
+function fireSkill(id,btn){
+  if(_skillCooldowns[id])return;
+  _skillCooldowns[id]=true;
+  const lbl=btn.querySelector('.deck-label');
+  const orig=lbl.textContent;
+  btn.classList.add('fired');
+  lbl.textContent='QUEUED ▸';
+  setTimeout(()=>{
+    btn.classList.remove('fired');
+    lbl.textContent=orig;
+    delete _skillCooldowns[id];
+    openReport(id);
+  },1800);
+}
+
+/* ── Report overlay ── */
+let _repState=null;
+function openReport(skillId){
+  const r=SKILL_REPORTS[skillId];if(!r)return;
+  _repState=r;
+  document.getElementById('repIcon').textContent=r.icon;
+  document.getElementById('repTitle').textContent=r.title;
+  document.getElementById('repSub').textContent=r.sub;
+  document.getElementById('repBody').innerHTML=r.content;
+  document.getElementById('repOverlay').classList.add('show');
+}
+function closeReport(){document.getElementById('repOverlay').classList.remove('show');stopRepVoice();}
+function emailReport(){
+  if(!_repState)return;
+  window.location.href='mailto:'+encodeURIComponent('melisavong@gmail.com')
+    +'?subject='+encodeURIComponent(_repState.title+' — O.T.I.S.')
+    +'&body='+encodeURIComponent(_repState.email);
+}
+let _repUtter=null;
+function readReport(){
+  if(!('speechSynthesis' in window))return;
+  stopRepVoice();
+  const text=document.getElementById('repBody').innerText;
+  _repUtter=new SpeechSynthesisUtterance(text);
+  const voices=speechSynthesis.getVoices();
+  const v=voices.find(x=>/en-GB/i.test(x.lang)&&/Daniel|Arthur|George|Oliver|UK|British/i.test(x.name))
+    ||voices.find(x=>/en-GB/i.test(x.lang))||voices.find(x=>/^en/i.test(x.lang));
+  if(v)_repUtter.voice=v;
+  _repUtter.lang='en-GB';_repUtter.rate=0.92;_repUtter.pitch=0.35;
+  const wave=document.getElementById('audioWave');
+  _repUtter.onstart=()=>{if(wave)wave.classList.add('live');};
+  _repUtter.onend=_repUtter.onerror=()=>{if(wave)wave.classList.remove('live');_repUtter=null;};
+  speechSynthesis.speak(_repUtter);
+}
+function stopRepVoice(){if('speechSynthesis' in window)speechSynthesis.cancel();
+  const wave=document.getElementById('audioWave');if(wave)wave.classList.remove('live');_repUtter=null;}
+
+document.getElementById('repOverlay').addEventListener('click',e=>{if(e.target.id==='repOverlay')closeReport();});
+
+/* ── Intel view ── */
+function vIntel(){
+  if(_otisRAF){cancelAnimationFrame(_otisRAF);_otisRAF=null;}
+  const now=new Date();
+  const nowMin=now.getHours()*60+now.getMinutes();
+  const sched=[
+    {time:'07:00',min:420,label:'Morning briefing review'},
+    {time:'09:00',min:540,label:'PPC bid approval batch'},
+    {time:'11:00',min:660,label:'PO #4471 supplier call'},
+    {time:'14:00',min:840,label:'Weekly inventory sync'},
+    {time:'16:00',min:960,label:'Ad creative review'},
+  ].map(s=>({...s,now:false}));
+  let curIdx=-1;
+  sched.forEach((s,i)=>{if(s.min<=nowMin)curIdx=i;});
+  if(curIdx>=0)sched[curIdx].now=true;
+  const timeStr=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+
+  view.innerHTML=`
+  <div class="vhead">
+    <div>
+      <div class="vtitle" style="font-weight:800">O.T.I.S. Intelligence</div>
+      <div class="vsub">Skills · Directives · Documents · AI Wire</div>
+    </div>
+    <div class="vmeta">RUNNER · STANDBY · ${timeStr}</div>
+  </div>
+  <div class="intel-grid">
+    <div class="intel-col">
+      <div class="panel p-pad">
+        <div class="p-h">
+          <div class="p-t">Command <span class="acc">// DECK</span></div>
+          <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--green);display:flex;align-items:center;gap:5px">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);display:inline-block;animation:blink 2.4s ease-in-out infinite"></span>IDLE
+          </div>
+        </div>
+        <div class="deck-btns">
+          ${INTEL_SKILLS.map(s=>`<button class="deck-btn" id="db-${s.id}" onclick="fireSkill('${s.id}',this)">
+            <div class="deck-dot"></div>
+            <span class="deck-label">${s.label}</span>
+            <span class="deck-arrow">→</span>
+          </button>`).join('')}
+        </div>
+        <div class="deck-hint">click to queue — report appears on completion</div>
+      </div>
+      <div class="panel p-pad">
+        <div class="p-h">
+          <div class="p-t">Directives <span class="acc">// TOP.3</span></div>
+          <button style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);background:transparent;border:0;cursor:pointer;letter-spacing:.06em" onclick="editDirectives()">EDIT</button>
+        </div>
+        <div id="directives"></div>
+      </div>
+      <div class="panel p-pad">
+        <div class="p-h"><div class="p-t">Schedule <span class="acc">// TODAY</span></div></div>
+        ${sched.map(s=>`<div class="sched-item${s.now?' now':''}">
+          <div class="sched-time">${s.time}</div>
+          <div class="sched-label">${s.label}${s.now?` <span style="font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);margin-left:8px;letter-spacing:.06em">NOW</span>`:''}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="intel-col">
+      <div class="panel p-pad">
+        <div class="p-h">
+          <div class="p-t">AI Wire <span class="acc">// MORNING.INTEL</span></div>
+          <button onclick="openReport('morning-report')" style="font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);background:transparent;border:0;cursor:pointer;letter-spacing:.06em">full report →</button>
+        </div>
+        ${AM_WIRE.map(h=>`<div class="wire-item" onclick="openReport('morning-report')">
+          <span class="wire-bullet">▸</span>
+          <span class="wire-text">${h}</span>
+        </div>`).join('')}
+      </div>
+      <div class="panel p-pad">
+        <div class="p-h"><div class="p-t">Documents <span class="acc">// INBOX.TRAIL</span></div></div>
+        ${RECENT_DOCS.map(d=>`<div class="doc-row" onclick="openReport('${d.skill}')">
+          <span class="doc-skill"><span>${d.icon}</span>${d.label}</span>
+          <span class="doc-age">${d.age}</span>
+        </div>`).join('')}
+        <div class="deck-hint" style="margin-top:10px">click to open in report viewer</div>
+      </div>
+      <div class="panel p-pad">
+        <div class="p-h">
+          <div class="p-t">Audio <span class="acc">// I/O</span></div>
+          <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);letter-spacing:.06em" id="audioStatus">TTS · STANDBY</div>
+        </div>
+        <div class="audio-wave" id="audioWave">
+          ${Array.from({length:22},(_,i)=>`<i style="--i:${i}"></i>`).join('')}
+        </div>
+        <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);margin-top:8px;letter-spacing:.05em">hold SPACE to talk · ESC to stop · or use the mic below</div>
+      </div>
+    </div>
+  </div>`;
+
+  renderDirectives();
+}
+
+const VIEWS={command:vCommand,sales:vSales,inventory:vInventory,marketing:vMarketing,projects:vProjects,agents:vAgents,intel:vIntel};
+const CRUMBS={command:"COMMAND CENTER",sales:"DAILY SALES TRACKER",inventory:"INVENTORY · SUPPLY CHAIN",marketing:"MARKETING · ADS",projects:"PROJECTS · TASKS",agents:"AGENT ROSTER",intel:"O.T.I.S. INTELLIGENCE"};
 
 document.querySelectorAll(".navbtn[data-view]").forEach(b=>{
   b.addEventListener("click",()=>{
@@ -1008,11 +1420,15 @@ function toggleVoice(){
   if(!SR){inp.placeholder='Voice not supported — type your question';
     setTimeout(()=>inp.placeholder="Ask O.T.I.S. anything — 'why did revenue spike yesterday?'",3000);return;}
   _jRec=new SR();_jRec.lang='en-US';_jRec.interimResults=true;
-  _jRec.onstart=()=>{_jListening=true;document.getElementById('jMic').classList.add('listening');inp.placeholder='Listening...';};
+  _jRec.onstart=()=>{_jListening=true;document.getElementById('jMic').classList.add('listening');inp.placeholder='Listening...';
+    document.getElementById('audioWave')?.classList.add('live');
+    const as=document.getElementById('audioStatus');if(as)as.textContent='TTS · LISTENING';};
   _jRec.onresult=e=>{inp.value=Array.from(e.results).map(r=>r[0].transcript).join('');};
   _jRec.onend=()=>{
     _jListening=false;document.getElementById('jMic').classList.remove('listening');
     inp.placeholder="Ask O.T.I.S. anything — 'why did revenue spike yesterday?'";
+    document.getElementById('audioWave')?.classList.remove('live');
+    const as=document.getElementById('audioStatus');if(as)as.textContent='TTS · STANDBY';
     if(inp.value.trim()) submitOtis();
   };
   _jRec.start();
@@ -1139,7 +1555,16 @@ function closeBriefing(){
 }
 // close on backdrop click or Escape
 $("#briefOverlay").addEventListener("click",e=>{ if(e.target.id==="briefOverlay") closeBriefing(); });
-document.addEventListener("keydown",e=>{ if(e.key==="Escape" && $("#briefOverlay").classList.contains("show")) closeBriefing(); });
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
+    if($("#briefOverlay").classList.contains("show")) closeBriefing();
+    if(document.getElementById("repOverlay").classList.contains("show")) closeReport();
+  }
+  // SPACE to toggle voice when not typing
+  if(e.code==="Space" && document.activeElement.tagName!=="INPUT" && document.activeElement.tagName!=="TEXTAREA"){
+    if(document.getElementById("audioWave")){e.preventDefault();toggleVoice();}
+  }
+});
 
 /* boot */
 vCommand();
