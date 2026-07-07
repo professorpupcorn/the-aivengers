@@ -857,6 +857,7 @@ function vCommand(){
 
   document.querySelectorAll(".kpi .val").forEach(el=>countUp(el,+el.dataset.t,{pre:el.dataset.pre,suf:el.dataset.suf,dec:+el.dataset.dec}));
   renderDirectives();
+  renderSchedule();
   initOtisNetwork();
 }
 
@@ -1298,6 +1299,70 @@ function todaySchedule(){
   if(curIdx>=0)sched[curIdx].now=true;
   return sched;
 }
+
+/* ── Google Calendar sync (calendar.json snapshot, written by O.T.I.S. sync) ── */
+let CAL_DATA=null;
+function localDateStr(d){
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function toMin(t){const[h,m]=t.split(":").map(Number);return h*60+m;}
+function fmt12(t){
+  let[h,m]=t.split(":").map(Number);
+  const ap=h>=12?"PM":"AM";h=h%12||12;
+  return h+":"+String(m).padStart(2,"0")+" "+ap;
+}
+function loadCalendar(){
+  fetch("calendar.json",{cache:"no-store"})
+    .then(r=>r.ok?r.json():null)
+    .then(d=>{if(d&&d.events){CAL_DATA=d;renderSchedule();}})
+    .catch(()=>{});
+}
+function renderSchedule(){
+  const list=document.getElementById("schedList");if(!list)return;
+  const tick=document.getElementById("schedTick");
+  const sync=document.getElementById("schedSync");
+  if(!CAL_DATA){
+    if(tick)tick.textContent="// TODAY";
+    if(sync)sync.textContent="MOCK · NOT SYNCED";
+    list.innerHTML=todaySchedule().map(s=>`<div class="sched-item${s.now?' now':''}">
+      <div class="sched-time">${s.time}</div>
+      <div class="sched-label">${s.label}${s.now?` <span style="font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);margin-left:8px;letter-spacing:.06em">NOW</span>`:''}</div>
+    </div>`).join("");
+    return;
+  }
+  const now=new Date();
+  const today=localDateStr(now);
+  const nowMin=now.getHours()*60+now.getMinutes();
+  const todays=CAL_DATA.events.filter(e=>e.date===today).sort((a,b)=>toMin(a.start)-toMin(b.start));
+  const syncTime=new Date(CAL_DATA.synced).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+  if(sync)sync.textContent="GCAL · SYNCED "+syncTime;
+  if(todays.length){
+    if(tick)tick.textContent="// TODAY";
+    list.innerHTML=todays.map(e=>{
+      const isNow=toMin(e.start)<=nowMin&&nowMin<toMin(e.end);
+      return `<div class="sched-item${isNow?' now':''}">
+        <div class="sched-time">${fmt12(e.start)}</div>
+        <div class="sched-label">${e.label}${e.loc?`<div style="font-family:'JetBrains Mono';font-size:9.5px;color:var(--txt-dim);margin-top:2px">${e.loc}</div>`:''}${isNow?` <span style="font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);margin-left:8px;letter-spacing:.06em">NOW</span>`:''}</div>
+      </div>`;
+    }).join("");
+  }else{
+    if(tick)tick.textContent="// UPCOMING";
+    const upcoming=CAL_DATA.events.filter(e=>e.date>today)
+      .sort((a,b)=>a.date===b.date?toMin(a.start)-toMin(b.start):a.date.localeCompare(b.date)).slice(0,5);
+    if(!upcoming.length){
+      list.innerHTML=`<div style="font-size:12.5px;color:var(--txt-dim);padding:8px 0">No events on the calendar this week.</div>`;
+      return;
+    }
+    list.innerHTML=`<div style="font-size:11px;color:var(--txt-dim);padding:2px 0 8px;font-family:'JetBrains Mono';letter-spacing:.05em">No events today — next up:</div>`
+      +upcoming.map(e=>{
+        const day=new Date(e.date+"T12:00:00").toLocaleDateString("en-US",{weekday:"short"}).toUpperCase();
+        return `<div class="sched-item">
+          <div class="sched-time" style="min-width:66px">${day} ${fmt12(e.start)}</div>
+          <div class="sched-label">${e.label}${e.loc?`<div style="font-family:'JetBrains Mono';font-size:9.5px;color:var(--txt-dim);margin-top:2px">${e.loc}</div>`:''}</div>
+        </div>`;
+      }).join("");
+  }
+}
 function deckPanelHTML(delay){
   return `<div class="panel p-pad"${delay?` style="animation-delay:${delay}"`:''}>
     <div class="p-h">
@@ -1327,11 +1392,11 @@ function directivesPanelHTML(delay){
 }
 function schedulePanelHTML(delay){
   return `<div class="panel p-pad"${delay?` style="animation-delay:${delay}"`:''}>
-    <div class="p-h"><div class="p-t">Schedule <span class="acc">// TODAY</span></div></div>
-    ${todaySchedule().map(s=>`<div class="sched-item${s.now?' now':''}">
-      <div class="sched-time">${s.time}</div>
-      <div class="sched-label">${s.label}${s.now?` <span style="font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);margin-left:8px;letter-spacing:.06em">NOW</span>`:''}</div>
-    </div>`).join('')}
+    <div class="p-h">
+      <div class="p-t">Schedule <span class="acc" id="schedTick">// TODAY</span></div>
+      <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);letter-spacing:.06em" id="schedSync"></div>
+    </div>
+    <div id="schedList"></div>
   </div>`;
 }
 function documentsPanelHTML(delay){
@@ -1393,6 +1458,7 @@ function vIntel(){
   </div>`;
 
   renderDirectives();
+  renderSchedule();
 }
 
 const VIEWS={command:vCommand,sales:vSales,inventory:vInventory,marketing:vMarketing,projects:vProjects,agents:vAgents,intel:vIntel};
@@ -1597,6 +1663,7 @@ document.addEventListener("keydown",e=>{
 
 /* boot */
 vCommand();
+loadCalendar();
 </script>
 </body>
 </html>
