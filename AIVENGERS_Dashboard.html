@@ -377,6 +377,9 @@ body{
 /* cmd v2 layout */
 .cmd-grid-3{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:14px;margin-top:14px}
 @media(max-width:1100px){.cmd-grid-3{grid-template-columns:1fr}}
+.cmd-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+@media(max-width:1400px){.cmd-grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.cmd-grid-4{grid-template-columns:1fr}}
 .cmd-panel{display:flex;flex-direction:column;min-height:340px}
 
 /* marketplace items */
@@ -844,9 +847,16 @@ function vCommand(){
         </div>
       </div>`).join("")}
     </div>
+  </div>
+  <div class="cmd-grid-4">
+    ${deckPanelHTML(".12s")}
+    ${directivesPanelHTML(".14s")}
+    ${schedulePanelHTML(".16s")}
+    ${documentsPanelHTML(".18s")}
   </div>`;
 
   document.querySelectorAll(".kpi .val").forEach(el=>countUp(el,+el.dataset.t,{pre:el.dataset.pre,suf:el.dataset.suf,dec:+el.dataset.dec}));
+  renderDirectives();
   initOtisNetwork();
 }
 
@@ -1273,11 +1283,9 @@ function stopRepVoice(){if('speechSynthesis' in window)speechSynthesis.cancel();
 
 document.getElementById('repOverlay').addEventListener('click',e=>{if(e.target.id==='repOverlay')closeReport();});
 
-/* ── Intel view ── */
-function vIntel(){
-  if(_otisRAF){cancelAnimationFrame(_otisRAF);_otisRAF=null;}
-  const now=new Date();
-  const nowMin=now.getHours()*60+now.getMinutes();
+/* ── shared widget panels (Command Center + Intel view) ── */
+function todaySchedule(){
+  const nowMin=new Date().getHours()*60+new Date().getMinutes();
   const sched=[
     {time:'07:00',min:420,label:'Morning briefing review'},
     {time:'09:00',min:540,label:'PPC bid approval batch'},
@@ -1288,7 +1296,59 @@ function vIntel(){
   let curIdx=-1;
   sched.forEach((s,i)=>{if(s.min<=nowMin)curIdx=i;});
   if(curIdx>=0)sched[curIdx].now=true;
-  const timeStr=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  return sched;
+}
+function deckPanelHTML(delay){
+  return `<div class="panel p-pad"${delay?` style="animation-delay:${delay}"`:''}>
+    <div class="p-h">
+      <div class="p-t">Command <span class="acc">// DECK</span></div>
+      <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--green);display:flex;align-items:center;gap:5px">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);display:inline-block;animation:blink 2.4s ease-in-out infinite"></span>IDLE
+      </div>
+    </div>
+    <div class="deck-btns">
+      ${INTEL_SKILLS.map(s=>`<button class="deck-btn" id="db-${s.id}" onclick="fireSkill('${s.id}',this)">
+        <div class="deck-dot"></div>
+        <span class="deck-label">${s.label}</span>
+        <span class="deck-arrow">→</span>
+      </button>`).join('')}
+    </div>
+    <div class="deck-hint">click to queue — report appears on completion</div>
+  </div>`;
+}
+function directivesPanelHTML(delay){
+  return `<div class="panel p-pad"${delay?` style="animation-delay:${delay}"`:''}>
+    <div class="p-h">
+      <div class="p-t">Directives <span class="acc">// TOP.3</span></div>
+      <button style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);background:transparent;border:0;cursor:pointer;letter-spacing:.06em" onclick="editDirectives()">EDIT</button>
+    </div>
+    <div id="directives"></div>
+  </div>`;
+}
+function schedulePanelHTML(delay){
+  return `<div class="panel p-pad"${delay?` style="animation-delay:${delay}"`:''}>
+    <div class="p-h"><div class="p-t">Schedule <span class="acc">// TODAY</span></div></div>
+    ${todaySchedule().map(s=>`<div class="sched-item${s.now?' now':''}">
+      <div class="sched-time">${s.time}</div>
+      <div class="sched-label">${s.label}${s.now?` <span style="font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);margin-left:8px;letter-spacing:.06em">NOW</span>`:''}</div>
+    </div>`).join('')}
+  </div>`;
+}
+function documentsPanelHTML(delay){
+  return `<div class="panel p-pad"${delay?` style="animation-delay:${delay}"`:''}>
+    <div class="p-h"><div class="p-t">Documents <span class="acc">// INBOX.TRAIL</span></div></div>
+    ${RECENT_DOCS.map(d=>`<div class="doc-row" onclick="openReport('${d.skill}')">
+      <span class="doc-skill"><span>${d.icon}</span>${d.label}</span>
+      <span class="doc-age">${d.age}</span>
+    </div>`).join('')}
+    <div class="deck-hint" style="margin-top:10px">click to open in report viewer</div>
+  </div>`;
+}
+
+/* ── Intel view ── */
+function vIntel(){
+  if(_otisRAF){cancelAnimationFrame(_otisRAF);_otisRAF=null;}
+  const timeStr=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 
   view.innerHTML=`
   <div class="vhead">
@@ -1300,36 +1360,9 @@ function vIntel(){
   </div>
   <div class="intel-grid">
     <div class="intel-col">
-      <div class="panel p-pad">
-        <div class="p-h">
-          <div class="p-t">Command <span class="acc">// DECK</span></div>
-          <div style="font-family:'JetBrains Mono';font-size:9px;color:var(--green);display:flex;align-items:center;gap:5px">
-            <span style="width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);display:inline-block;animation:blink 2.4s ease-in-out infinite"></span>IDLE
-          </div>
-        </div>
-        <div class="deck-btns">
-          ${INTEL_SKILLS.map(s=>`<button class="deck-btn" id="db-${s.id}" onclick="fireSkill('${s.id}',this)">
-            <div class="deck-dot"></div>
-            <span class="deck-label">${s.label}</span>
-            <span class="deck-arrow">→</span>
-          </button>`).join('')}
-        </div>
-        <div class="deck-hint">click to queue — report appears on completion</div>
-      </div>
-      <div class="panel p-pad">
-        <div class="p-h">
-          <div class="p-t">Directives <span class="acc">// TOP.3</span></div>
-          <button style="font-family:'JetBrains Mono';font-size:9px;color:var(--txt-dim);background:transparent;border:0;cursor:pointer;letter-spacing:.06em" onclick="editDirectives()">EDIT</button>
-        </div>
-        <div id="directives"></div>
-      </div>
-      <div class="panel p-pad">
-        <div class="p-h"><div class="p-t">Schedule <span class="acc">// TODAY</span></div></div>
-        ${sched.map(s=>`<div class="sched-item${s.now?' now':''}">
-          <div class="sched-time">${s.time}</div>
-          <div class="sched-label">${s.label}${s.now?` <span style="font-family:'JetBrains Mono';font-size:9px;color:var(--cyan);margin-left:8px;letter-spacing:.06em">NOW</span>`:''}</div>
-        </div>`).join('')}
-      </div>
+      ${deckPanelHTML()}
+      ${directivesPanelHTML()}
+      ${schedulePanelHTML()}
     </div>
     <div class="intel-col">
       <div class="panel p-pad">
@@ -1342,14 +1375,7 @@ function vIntel(){
           <span class="wire-text">${h}</span>
         </div>`).join('')}
       </div>
-      <div class="panel p-pad">
-        <div class="p-h"><div class="p-t">Documents <span class="acc">// INBOX.TRAIL</span></div></div>
-        ${RECENT_DOCS.map(d=>`<div class="doc-row" onclick="openReport('${d.skill}')">
-          <span class="doc-skill"><span>${d.icon}</span>${d.label}</span>
-          <span class="doc-age">${d.age}</span>
-        </div>`).join('')}
-        <div class="deck-hint" style="margin-top:10px">click to open in report viewer</div>
-      </div>
+      ${documentsPanelHTML()}
       <div class="panel p-pad">
         <div class="p-h">
           <div class="p-t">Audio <span class="acc">// I/O</span></div>
